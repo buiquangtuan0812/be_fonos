@@ -1,34 +1,26 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 from flask_pymongo import PyMongo
 from controller.AccountController import AccountController
+from controller.BookController import BookController
+from route import AccountRoute, BookRoute
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/fonos_db'
 
 mongo = PyMongo(app)
-
-@app.route('/', methods = ['GET'])
-def get_data():
-    data = mongo.db.books.find()
-    return render_template('index.html', books=data)
-
-@app.route('/signup', methods = ['POST'])
-def signup():
-    response = AccountController.signup(
-        mongo = mongo,
-        request = request
-    )
+app.config['PORT'] = 8080
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers','Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE')
     return response
 
-@app.route('/login', methods = ['POST'])
-def login():
-    response = AccountController.login(
-        mongo = mongo,
-        request = request
-    )
-    return response
-
+BookRoute.config_routes(app, mongo)
+AccountRoute.config_routes(app, mongo)
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host='0.0.0.0', port=app.config['PORT'], debug=True)
