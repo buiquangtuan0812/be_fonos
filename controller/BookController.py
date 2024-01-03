@@ -11,9 +11,9 @@ class BookController:
             book['_id'] = str(book['_id'])
 
         if books is None:
-            return jsonify({"message": "No books found"}), 400
+            return jsonify({'message': 'Book not found', 'statusCode': 400})
         else:
-            return books, 200
+            return jsonify({'data': books, 'statusCode': 200})
         
     @staticmethod
     def get_book_by_key(mongo, request):
@@ -25,9 +25,9 @@ class BookController:
             book['_id'] = str(book['_id'])
 
         if books is None:
-            return jsonify({'message': 'Book not found'}), 404
+            return jsonify({'message': 'Book not found', 'statusCode': 404})
         else:
-            return books, 200
+            return jsonify({'data': books, 'statusCode': 200})
             
     
     @staticmethod
@@ -39,16 +39,28 @@ class BookController:
 
         if book is not None:
             book['_id'] = str(book['_id'])
-            return book, 200
+            return jsonify({'data': book, 'statusCode': 200})
         else:
-            return jsonify({'message': 'Book not found'}), 404
+            return jsonify({'message': 'Book not found', 'statusCode': 404})
     
     @staticmethod
     def get_book_propose(mongo):
         book_collection = mongo.db.books
         books = list(book_collection.find())
-        book = random.sample(books, 8)
-        for value in book:
+        book_random = random.sample(books, 8)
+        for value in book_random:
             value['_id'] = str(value['_id'])
-        return book, 200
+        return jsonify({'data': book_random, 'statusCode': 200})
+    
+    @staticmethod
+    def get_book_by_type(mongo, request):
+        book_collection = mongo.db.books
+        key = request.args.get('type')
+        books = book_collection.find({'type': key})
+
+        books_list = [book for book in books]
+
+        for value in books_list:
+            value['_id'] = str(value['_id'])
+        return jsonify({'data': books_list, 'statusCode': 200})
         

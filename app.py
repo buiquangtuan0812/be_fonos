@@ -1,8 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask
 from flask_cors import CORS
 from flask_pymongo import PyMongo
-from controller.AccountController import AccountController
-from controller.BookController import BookController
 from route import AccountRoute, BookRoute
 
 app = Flask(__name__)

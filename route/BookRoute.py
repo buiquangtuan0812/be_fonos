@@ -31,3 +31,11 @@ def config_routes(app, mongo):
             request = request
         )
         return response
+    
+    @app.route('/get_book_by_type', methods = ['GET'])
+    def get_book_by_type():
+        response = BookController.get_book_by_type(
+            mongo = mongo,
+            request = request
+        )
+        return response
