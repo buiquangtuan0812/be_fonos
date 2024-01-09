@@ -39,3 +39,21 @@ def config_routes(app, mongo):
             request = request
         )
         return response
+
+    @app.route('/get_book_propse_by_id', methods = ['GET'])
+    def get_book_propse_by_id():
+        response = BookController.get_book_propse_by_id(
+            mongo = mongo,
+            request = request
+        )
+
+        return response
+    
+    @app.route('/get_book_propse_by_author', methods = ['GET'])
+    def get_book_propse_by_author():
+        response = BookController.get_book_propse_by_author(
+            mongo = mongo,
+            request = request
+        )
+
+        return response

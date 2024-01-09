@@ -25,3 +25,21 @@ def config_routes(app, mongo):
             request = request
         )
         return response
+
+    @app.route('/like_book', methods = ['POST'])
+    def like_book():
+        response = AccountController.like_book(
+            mongo = mongo,
+            request = request
+        )
+
+        return response
+    
+    @app.route('/dislike_book', methods = ['POST'])
+    def dislike_book():
+        response = AccountController.dislike_book(
+            mongo = mongo,
+            request = request
+        )
+
+        return response
