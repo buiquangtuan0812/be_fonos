@@ -45,7 +45,14 @@ class AccountController:
         account = mongo.db.accounts.find_one({'username': username})
         if account:
             if bcrypt.check_password_hash(account['password'], password):
-                return jsonify({'message': 'Login successful', 'statusCode': 200, 'id': str(account['_id'])})
+                user = {
+                    "id": str(account['_id']),
+                    "username": account['username'],
+                    "email": account['email'],
+                    "image": account['image'],
+                    "birthday": account['birthday']
+                }
+                return jsonify({'message': 'Login successful', 'statusCode': 200, 'user': user})
             else: 
                 return jsonify({'message': 'Password incorrect', 'statusCode': 401})
         else:
@@ -99,14 +106,10 @@ class AccountController:
         account = account_collection.find_one({'_id': ObjectId(id_user)})
         book = book_collection.find_one({'_id': ObjectId(id_book)})
 
-        book_info = {}
-        book_info['_id'] = str(book['_id'])
-        book_info['name'] = book['name']
-        book_info['imgDes'] = book['imgDes']
-
         favourite_books = account.get('favourite_books')
-
-        favourite_books.remove(book_info)
+        for item in favourite_books:
+            if item['name'] == book['name']:
+                favourite_books.remove(item)
 
         account_collection.update_one({'_id': ObjectId(id_user)}, {'$set': {'favourite_books': favourite_books}})
 

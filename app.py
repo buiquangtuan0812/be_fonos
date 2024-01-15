@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_pymongo import PyMongo
-from route import AccountRoute, BookRoute
+from route import AccountRoute, BookRoute, AuthorRoute
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +19,7 @@ def after_request(response):
 
 BookRoute.config_routes(app, mongo)
 AccountRoute.config_routes(app, mongo)
+AuthorRoute.config_routes(app, mongo)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=app.config['PORT'], debug=True)
