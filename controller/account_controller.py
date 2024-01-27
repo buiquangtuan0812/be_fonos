@@ -1,4 +1,4 @@
-from model.Account import Account
+from model.account import Account
 from flask import jsonify
 from flask_bcrypt import Bcrypt
 from bson import ObjectId

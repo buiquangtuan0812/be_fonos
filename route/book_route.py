@@ -1,5 +1,5 @@
 from flask import request
-from controller.BookController import BookController
+from controller.book_controller import BookController
 
 def config_routes(app, mongo):
     @app.route('/get_books', methods = ['GET'])

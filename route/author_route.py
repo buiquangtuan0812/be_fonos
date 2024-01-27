@@ -1,5 +1,5 @@
 from flask import request
-from controller.AuthorController import AuthorController
+from controller.author_controller import AuthorController
 
 def config_routes(app, mongo):
     @app.route('/get_author_by_name', methods = ['GET'])

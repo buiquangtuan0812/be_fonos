@@ -1,5 +1,5 @@
 from flask import request
-from controller.AccountController import AccountController
+from controller.account_controller import AccountController
 
 def config_routes(app, mongo):
     @app.route('/register', methods=['POST'])
